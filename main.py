@@ -6,6 +6,7 @@ class input():
         self.minimum = mini
         self.maximum = maxi
         self.sections = {}
+    def antecedent(self):
 
     def add_section(self,nodes:list,name:str):
         if len(nodes) == 3:
@@ -34,11 +35,11 @@ class input():
         plt.legend()
         plt.show()
 
-    def __and__(self,other):
-        print(np.interp(6,self.sections['poor1'],y2))
-        return # dwie
-
-    def __or__(self, other):
+    # def __and__(self,other):
+    #     print(np.interp(6,self.sections['poor1'],y2))
+    #     return # dwie
+    #
+    # def __or__(self, other):
 
 
 
