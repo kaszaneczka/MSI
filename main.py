@@ -34,9 +34,11 @@ class input():
         plt.legend()
         plt.show()
 
-    def set_procent(self,szukana:list,section:str):
+    def __and__(self,other):
         print(np.interp(6,self.sections['poor1'],y2))
         return # dwie
+
+    def __or__(self, other):
 
 
 
