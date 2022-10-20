@@ -7,6 +7,8 @@ class input():
         self.maximum = maxi
         self.sections = {}
 
+    def __getitem__(self, index:str):
+        return self.sections[index]
 
     def add_section(self,nodes:list,name:str):
         if len(nodes) == 3:
@@ -35,21 +37,87 @@ class input():
         plt.legend()
         plt.show()
 
-    def __and__(self,other):
-        
-        return # dwie
+class ctrl():
+    def __init__(self):
+        self.inputy = []
+        self.warunki = []
+        self.outy = []
+        self.y = [[0,1,0],[0,1,1,0]]
+        self.pomoc2 = []
+        self.wyjscie = []
+    def rule(self,inputy: list,warunki:list,wartosc : float):
+        self.inputy.append(inputy)
+        self.warunki.append(warunki)
+        self.outy.append(wartosc)
+    def compute(self,input:list = [2,3.2]):
+        self.up = 0
+        self.down = 0
+        for a in self.inputy:
+            self.pomoc = []
+            for b,c in enumerate(a):
+                if len(c) == 3:
+                    y = [0,1,0]
+                    self.pomoc.append(np.interp(input[b],c,y))
+                if len(c) == 4:
+                    y = [0,1,1,0]
+                    self.pomoc.append(np.interp(input[b],c,y))
+            self.pomoc2.append(self.pomoc)
 
-    # def __or__(self, other):
+        for a in range(len(self.warunki)):
+            for b in range(len(self.warunki[a])):
+                    if self.warunki[a][0] == 'and':
+                        self.pomoc2[a].insert(0,sorted(self.pomoc2[a][b:b+2])[-1])
+                        self.pomoc2[a].pop(b+1)
+                        self.pomoc2[a].pop(b + 1)
+                    if self.warunki[a][0] == 'or':
+                        self.pomoc2[a].insert(0, sorted(self.pomoc2[a][b:b + 2])[0])
+                        self.pomoc2[a].pop(b + 1)
+                        self.pomoc2[a].pop(b + 1)
+            self.wyjscie.append(self.pomoc2[a][0])
+
+
+
+        for a in range(len(self.wyjscie)):
+            self.up += self.wyjscie[a]*self.outy[a]
+            self.down += self.wyjscie[a]
+        return self.up/self.down
+
+
+
+
+
+ctrl=ctrl()
+input1 = input(0,10)
+input2 = input(0,5)
+
+input1.add_section([0,0,3,4],'poor')
+input1.add_section([3,4,5,6],'avg')
+input1.add_section([5,6,10,10],'good')
+
+input2.add_section([0,0,1,2],'poor')
+input2.add_section([1,2,3,4],'avg')
+input2.add_section([3,4,5,5],'good')
+
+ctrl.rule([input1['poor'],input2['poor']],['and'],0)
+ctrl.rule([input1['poor'],input2['avg']],['and'],1)
+ctrl.rule([input1['poor'],input2['good']],['and'],4)
+
+ctrl.rule([input1['avg'],input2['poor']],['and'],1)
+ctrl.rule([input1['avg'],input2['avg']],['and'],3)
+ctrl.rule([input1['avg'],input2['good']],['and'],4)
+
+ctrl.rule([input1['good'],input2['poor']],['and'],5)
+ctrl.rule([input1['good'],input2['avg']],['and'],7)
+ctrl.rule([input1['good'],input2['good']],['and'],10)
+
+print(ctrl.compute([7,2]))
+
+
 
 #print(np.interp(6,self.sections['poor1'],y2))
 
-input1 = input(0,10)
-input1.add_section([0,1,2,3],'poor')
-input1.add_section([2,3,4,5],'avg')
-input1.add_section([4,6,8,10],'good')
-print(type(input1))
-#print(input1.sections)
-input1.draw_input()
+
+
 
 
 
